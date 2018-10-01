@@ -152,7 +152,6 @@ type PageTargeting = {
     co: string,
     tn: string,
     slot: string,
-    invCode: ?string,
 };
 
 const buildAppNexusTargetingObject = once(
@@ -173,7 +172,6 @@ const buildAppNexusTargetingObject = once(
             pageTargeting.tn,
             pageTargeting.slot,
         ].join('|'),
-        invCode: pageTargeting.invCode,
     })
 );
 
@@ -193,16 +191,11 @@ const buildPageTargeting = once(
         // personalised ads targeting
         const paTargeting: {} =
             adConsentState !== null ? { pa: adConsentState ? 't' : 'f' } : {};
+
         const adFreeTargeting: {} = commercialFeatures.adFree
             ? { af: 't' }
             : {};
 
-        const getInvCode = (): { [string]: string } => {
-            const bp = getBreakpoint();
-            return {
-                invCode: `${bp}|${page.section}|${bp}`,
-            };
-        };
         const pageTargets: PageTargeting = Object.assign(
             {
                 sens: page.isSensitive ? 't' : 'f',
@@ -226,7 +219,6 @@ const buildPageTargeting = once(
             page.sharedAdTargeting,
             paTargeting,
             adFreeTargeting,
-            getInvCode(),
             getWhitelistedQueryParams()
         );
 
