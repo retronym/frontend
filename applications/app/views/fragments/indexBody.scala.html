@@ -58,6 +58,41 @@
         </div>
     }
 
+    case None if index.page.metadata.id == "culture/series/thestart" => {
+        <div class="l-side-margins">
+            <div class="u-cf index-page" data-link-name="Front | @request.path" role="main">
+
+                <h1 id="the-start-new-header"> hellooo hi </h1>
+
+                @defining(IndexPage.makeFront(index, Edition(request)).containers) { containers =>
+                    @containers.map { containerDefinition =>
+                        @container(
+                            containerDefinition = containerDefinition,
+                            frontId = Some(index.idWithoutEdition)
+                        )
+                    }
+                }
+
+                @index.page.metadata.pagination.map { paginationInstance =>
+                    <div class="fc-container__pagination">
+                        @pagination(index.page.metadata.webTitle, paginationInstance, PagePaths.fromId(index.idWithoutEdition))
+                    </div>
+                }
+
+                @fragments.trendingTopics(index.faciaTrails, index.page.metadata.id, None)
+
+            <div class="fc-container fc-container--commercial">@fragments.commercial.commercialComponent()</div>
+
+                @defining(IndexPage.makeLinkedData(index)) { linkedData =>
+                    <script data-schema="@{linkedData.`@type`}" type="application/ld+json">
+                        @Html(model.meta.LinkedData.toJson(linkedData))
+                    </script>
+                }
+
+            </div>
+        </div>
+    }
+
     case None => {
         <div class="l-side-margins">
             <div class="u-cf index-page" data-link-name="Front | @request.path" role="main">

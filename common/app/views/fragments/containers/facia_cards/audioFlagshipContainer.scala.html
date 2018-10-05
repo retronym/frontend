@@ -1,0 +1,41 @@
+@import com.gu.commercial.branding.Branding
+@import common.commercial.ContainerModel
+@import common.{Edition, Localisation}
+@import views.html.fragments.commercial.containerLogo
+@import views.support.RenderClasses
+
+@(containerDefinition: layout.FaciaContainer,
+    frontProperties: model.FrontProperties,
+    maybeContainerModel: Option[ContainerModel],
+    showFrontBranding: Boolean,
+    frontId: Option[String])(implicit request: RequestHeader)
+
+@containerHeader(containerDefinition, frontProperties)
+
+<h3>My new audio box</h3>
+@for(containerLayout <- containerDefinition.containerLayout) {
+    <div class="@RenderClasses(Map(
+        ("fc-container__body", true),
+        ("fc-container--rolled-up-hide", true),
+        ("fc-show-more--hidden", containerDefinition.addShowMoreClasses),
+        ("js-container--fc-show-more", containerDefinition.addShowMoreClasses),
+        ("fc-show-more--mobile-only", containerDefinition.hasMobileOnlyShowMore)
+    ))"
+    data-title="@Localisation(containerDefinition.displayName getOrElse "")"
+    data-id="@containerDefinition.dataId">
+
+        <p> hello </p>
+        <h3>@containerDefinition.href</h3>
+
+@*//        @for(sliceWithCards <- containerLayout.slices) {*@
+@*//            @slice(sliceWithCards, containerDefinition.index, frontProperties = Some(frontProperties), containerDefinition.displayName, frontId)*@
+@*//        }*@
+
+
+        @* Don't hide any items, for on tag pages, which are chronological *@
+        @showMore(
+            containerDefinition.containerLayout.map(_.remainingCards).getOrElse(Nil),
+            containerDefinition.index
+        )
+    </div>
+}
