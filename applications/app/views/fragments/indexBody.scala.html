@@ -2,6 +2,7 @@
 @import com.gu.commercial.branding.PaidContent
 @import common.commercial.EditionBranding
 @import common.{Edition, PagePaths}
+@import conf.FlagshipAudio
 @import model.FrontProperties
 @import model.FrontProperties.empty
 @import services.IndexPage
@@ -15,6 +16,7 @@
         <div id="js-accessibility-preferences">Loading&hellip;</div>
     }
 }
+
 
 @index.branding(Edition(request)) match {
 
@@ -58,17 +60,19 @@
         </div>
     }
 
-    case None if index.page.metadata.id == "culture/series/thestart" => {
-        <div class="l-side-margins">
-            <div class="u-cf index-page" data-link-name="Front | @request.path" role="main">
+    case None if index.page.metadata.id == FlagshipAudio.tagName => {
 
-                <h1 id="the-start-new-header"> hellooo hi </h1>
+        <div class="l-side-margins content--media">
+            <div class="u-cf index-page content--media" data-link-name="Front | @request.path" role="main">
+
+                @fragments.audioSeriesHead(FlagshipAudio.seriesId, FlagshipAudio.title, FlagshipAudio.descriptionLong, FlagshipAudio.descriptionShort, FlagshipAudio.imageUrl, FlagshipAudio.subscribeLinks)
 
                 @defining(IndexPage.makeFront(index, Edition(request)).containers) { containers =>
                     @containers.map { containerDefinition =>
                         @container(
                             containerDefinition = containerDefinition,
-                            frontId = Some(index.idWithoutEdition)
+                            frontId = Some(index.idWithoutEdition),
+                            showFrontBranding = isFirstNonThrasherContainer(containerDefinition.index, containers))
                         )
                     }
                 }

@@ -16,20 +16,15 @@
 @for(containerLayout <- containerDefinition.containerLayout) {
     <div class="@RenderClasses(Map(
         ("fc-container__body", true),
-        ("fc-container--rolled-up-hide", true),
-        ("fc-show-more--hidden", containerDefinition.addShowMoreClasses),
-        ("js-container--fc-show-more", containerDefinition.addShowMoreClasses),
-        ("fc-show-more--mobile-only", containerDefinition.hasMobileOnlyShowMore)
+        ("fc-container--rolled-up-hide", true)
     ))"
     data-title="@Localisation(containerDefinition.displayName getOrElse "")"
     data-id="@containerDefinition.dataId">
 
-        <p> hello </p>
-        <h3>@containerDefinition.href</h3>
-
-@*//        @for(sliceWithCards <- containerLayout.slices) {*@
-@*//            @slice(sliceWithCards, containerDefinition.index, frontProperties = Some(frontProperties), containerDefinition.displayName, frontId)*@
-@*//        }*@
+        @* I cannot unpack this I don't know how it works *@
+        @for(sliceWithCards <- containerLayout.slices) {
+            @audioFlagshipSlice(sliceWithCards, containerDefinition.index, frontProperties = Some(frontProperties), containerDefinition.displayName, frontId)
+        }
 
 
         @* Don't hide any items, for on tag pages, which are chronological *@

@@ -1,0 +1,25 @@
+
+@(seriesId: String, title: String, descriptionLong: String, descriptionShort: String, imageUrl: String, subscribeLinks: Map[String, String])
+
+<div class="@(seriesId)__thrasher">
+    <div class="flagship-audio__artwork">
+        <div class="flagship-audio__content">
+            <h1 class="flagship-audio__title">@title</h1>
+            <p class="flagship-audio__description">
+                <span class="regular-description"> @descriptionLong</span>
+                <span class="short-description"> @descriptionShort</span>
+            </p>
+        </div>
+    </div>
+    <ul class="flagship-audio__buttons">
+        <p class="flagship-audio__subscribe-label">Subscribe for free</p>
+        @for((name, link) <- subscribeLinks){
+        <a class="flagship-audio__link" href="@link" target="_blank" data-link="podcast-subscribe">
+            <li class="flagship-audio__button flagship-audio__button--@seriesId">
+                <span class="text">@name</span>
+            </li>
+        </a>
+        }
+
+    </ul>
+</div>
