@@ -128,6 +128,9 @@ do you have fonts in localStorage?
                             break;
                         }
                     }
+
+                    console.log('set localStorage key --->', fontStorageKey(fontName, fontHash));
+
                     localStorage.setItem(fontStorageKey(fontName, fontHash), JSON.stringify({value: css}));
                 }
 
@@ -144,6 +147,8 @@ do you have fonts in localStorage?
                     const fontName = fontInfo[2];
                     const fontHash = fontInfo[1];
                     const fontData = localStorage.getItem(fontStorageKey(fontName, fontHash));
+
+                    console.log('fontHash from head --->', fontHash, fontName, fontData);
 
                     if (fontData) {
                         useFont(font, JSON.parse(fontData).value);
