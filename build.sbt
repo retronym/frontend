@@ -227,3 +227,18 @@ badgeHash := {
   println(result)
 }
 
+val touchWiringFiles = taskKey[Unit]("")
+
+touchWiringFiles in Global := {
+  val sources = List(
+    "./dev-build/app/AppLoader.scala", "./identity/app/idapiclient/IdApiComponents.scala", "./identity/app/form/UserFormMapping.scala", "./identity/app/form/FormComponents.scala", "./identity/app/formstack/FormStackComponents.scala", "./identity/app/controllers/IdentityControllers.scala", "./identity/app/conf/IdentityConfigurationComponents.scala", "./identity/app/AppLoader.scala", "./identity/app/services/IdentityServices.scala", "./archive/app/AppLoader.scala", "./rss/app/AppLoader.scala", "./admin/app/controllers/AdminControllers.scala", "./admin/app/AppLoader.scala", "./facia/app/controllers/FaciaControllers.scala", "./facia/app/AppLoader.scala", "./sport/app/football/controllers/FootballControllers.scala", "./sport/app/cricket/controllers/CricketControllers.scala", "./sport/app/rugby/controllers/RugbyControllers.scala", "./sport/app/AppLoader.scala", "./commercial/app/controllers/CommercialControllers.scala", "./commercial/app/AppLoader.scala", "./project/Dependencies.scala", "./project/ProjectSettings.scala", "./common/app/common/Logback/KinesisAdapter.scala", "./diagnostics/app/controllers/DiagnosticsControllers.scala", "./diagnostics/app/AppLoader.scala", "./applications/app/controllers/ApplicationsControllers.scala", "./applications/app/AppLoader.scala", "./preview/app/AppLoader.scala", "./article/app/controllers/ArticleControllers.scala", "./article/app/AppLoader.scala", "./discussion/app/controllers/DiscussionControllers.scala", "./discussion/app/AppLoader.scala", "./facia-press/app/AppLoader.scala", "./onward/app/controllers/OnwardControllers.scala", "./onward/app/AppLoader.scala"
+  )
+  import java.nio.file._
+  import java.nio.file.attribute._
+  val fileTime = FileTime.fromMillis(System.currentTimeMillis);
+  for (source <- sources) {
+    val path = Paths.get(source)
+    Files.setLastModifiedTime(path, fileTime)
+    Files.write(path, " ".getBytes(), StandardOpenOption.APPEND)
+  }
+}

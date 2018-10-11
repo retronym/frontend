@@ -25,7 +25,7 @@ object ProjectSettings {
     publishArtifact in (Compile, packageDoc) := false,
     sources in (Compile,doc) := Seq.empty,
     doc in Compile := target.map(_ / "none").value,
-    scalaVersion := "2.12.7",
+    scalaVersion := "2.12.8-bin-108ba25",
     initialize := {
       val _ = initialize.value
       assert(sys.props("java.specification.version") == "1.8",
@@ -35,7 +35,18 @@ object ProjectSettings {
       val allProjects = ScopeFilter(inAnyProject)
       clean.all(allProjects)
     }.value
-  )
+  ) ++ Seq(Compile, Test).flatMap(config =>
+     List(
+      scalacOptions in config := List("-Ycache-macro-class-loader:last-modified", "-Yprofile-enabled", "-Yprofile-destination", target.value / config.toString + ".csv"),
+      {
+        def includeOnMacroClasspath(element: sbt.Attributed[java.io.File]): Boolean = {
+          val fileName = element.data.getName
+          fileName.contains("play-json") || fileName.contains("macwire") || fileName.contains("scalactic") || fileName.contains("enumeratum") || fileName.contains("scalatest") || fileName.contains("macros")
+        }
+        scalacOptions in config ++= List("-Ymacro-classpath", (dependencyClasspath in config).value.filter(includeOnMacroClasspath).map(_.data.toString).mkString(java.io.File.pathSeparator))
+      }
+    )
+   )
 
   val frontendDependencyManagementSettings = Seq(
     ivyXML :=
@@ -144,3 +155,4 @@ object ProjectSettings {
 
   def withTests(project: Project): ClasspathDep[ProjectReference] = project % "test->test;compile->compile"
 }
+             
